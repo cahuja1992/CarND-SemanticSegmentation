@@ -12,7 +12,7 @@ BATCH_SIZE = 10
 DROPOUT_KEEP_PROB = 0.7
 LEARNING_RATE = 0.001                              
 DATA_DIR = './data'
-EXEC_DIR = './execs'
+RUNS_DIR = './runs'
 NUM_CLASSES = 2
 
 
@@ -168,12 +168,11 @@ def run():
         last_layer = layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, NUM_CLASSES)
         learning_rate = tf.placeholder(tf.float32, name = 'learning-rate')
 
-        correct_label = tf.placeholder(tf.float32, (None, image_shape[0], image_shape[1], NUM_CLASSES), name='correct-label')
-
+        correct_label = tf.placeholder(tf.float32, (None, image_shape[0], image_shape[1], NUM_CLASSES), name='correct_label')
         logits, train_op, cross_entropy_loss = optimize(last_layer, correct_label, learning_rate, NUM_CLASSES)
         train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, train_op,cross_entropy_loss, input_image,correct_label, keep_prob, learning_rate)
 
-        helper.save_inference_samples(EXEC_DIR, DATA_DIR, sess, image_shape, logits, keep_prob, input_image)
+        helper.save_inference_samples(RUNS_DIR, DATA_DIR, sess, image_shape, logits, keep_prob, input_image)
 
 if __name__ == '__main__':
     run()
