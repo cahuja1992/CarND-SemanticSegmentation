@@ -93,6 +93,9 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     skip1 = tf.add(trans1, vgg_layer4_1x1, name = 'skip_conn1_skip_connection')
     trans2 = layer_transposed(skip1, num_classes, 'transp_conv2')
 
+    vgg_layer3_1x1 = layer_1x1_conv(vgg_layer3_out, num_classes, 'vgg_layer3')
+    skip1 = tf.add(trans2, vgg_layer3_1x1, name = 'skip_conn2_skip_connection')
+    return layer_transposed(skip2, num_classes, 'output', kernel=16, strides=(8, 8))
 
 
 def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
